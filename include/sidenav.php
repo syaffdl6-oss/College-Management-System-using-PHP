@@ -39,9 +39,8 @@ $image = $data['image'];
                 <ul>
                   <li>
                   <a href="addstudent.php"><i class="material-icons">person_add</i>Add Student</a>
-                  <li><a href="editstudent.php?id=20"><i class="material-icons">edit</i>Edit Student</a></li>
-                  <li><a href="deletestudent.php"><i class="material-icons">delete</i>Delete Student</a></li>
-                  <li><a href="allstudents.php"><i class="material-icons">person</i>All Student</a></li>
+                  <li><a href="allstudents.php"><i class="material-icons">people</i>Manage Students</a></li>
+                  <li><a href="deletestudent.php"><i class="material-icons">search</i>Search Students</a></li>
                   
                   </li>
                 </ul>
@@ -59,9 +58,7 @@ $image = $data['image'];
             <ul>
               <li>
               <li><a href="addteacher.php"><i class="material-icons">group_add</i>Add Teacher</a></li>
-              <li><a href="editteacher.php?id=1"><i class="material-icons">edit</i>Edit Teacher</a></li>
-              <li><a href=""><i class="material-icons">delete</i>Delete Teachers</a></li>
-              <li><a href="teachers.php"><i class="material-icons">groups</i>All Teachers</a></li>
+              <li><a href="teachers.php"><i class="material-icons">groups</i>Manage Teachers</a></li>
               </li>
             </ul>
           </div>
@@ -83,7 +80,6 @@ $image = $data['image'];
         </li>
         <div class="divider"></div>
         <li><a href="../include/logout.php"><i class="material-icons">logout</i>Logout</a></li>
-        <li><a href="about.php"><i class="material-icons">info</i>About Us</a></li>
-        <li><a href="contact.php"><i class="material-icons">call</i>Contact Us</a></li>
+        <li><a href="about.php"><i class="material-icons">info</i>About System</a></li>
 
       </ul>

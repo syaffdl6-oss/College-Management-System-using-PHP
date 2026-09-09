@@ -8,21 +8,21 @@ require_once('../include/header.php');
 
 // Fetching The Number Of Students
 
-$query = "SELECT * FROM students";
+$query = "SELECT COUNT(*) AS total FROM students";
 $run = mysqli_query($con,$query);
-$student_row = mysqli_num_rows($run);
+$student_row = (int) mysqli_fetch_assoc($run)['total'];
 
 // Fetching The Number Of Courses
 
-$query = "SELECT * FROM course";
+$query = "SELECT COUNT(*) AS total FROM course";
 $run = mysqli_query($con,$query);
-$course_row = mysqli_num_rows($run);
+$course_row = (int) mysqli_fetch_assoc($run)['total'];
 
 // Fetching The Number Of Teachers
 
-$query = "SELECT * FROM teacher";
+$query = "SELECT COUNT(*) AS total FROM teacher";
 $run = mysqli_query($con,$query);
-$teacher_row = mysqli_num_rows($run);
+$teacher_row = (int) mysqli_fetch_assoc($run)['total'];
 
 ?>
       <!-- The Coding Has Been Started From Here -->
@@ -40,6 +40,12 @@ $teacher_row = mysqli_num_rows($run);
       <!-- The Dashboard Coding Started From Here -->
 
       <div class="row main">
+        <div class="col s12">
+          <div class="card-panel teal lighten-5">
+            <h5 class="teal-text text-darken-3">Administration overview</h5>
+            <p>Manage people and academic programmes from one place.</p>
+          </div>
+        </div>
         <div class="col m12 s12 l3">
           <div class="card">
             <div class="card-content blue lighten-3 white-text">
@@ -47,7 +53,7 @@ $teacher_row = mysqli_num_rows($run);
               <p> <b>Students</b> </p>
             </div>
             <div class=" center card-action blue lighten-2 white-text" >
-           <a href="allstudents.php">More Information <i class="material-icons tiny" >open_in_new</i></a>
+           <a href="allstudents.php">Manage students <i class="material-icons tiny" >open_in_new</i></a>
             </div>
           </div>
         </div>
@@ -59,7 +65,7 @@ $teacher_row = mysqli_num_rows($run);
                   
               </div>
               <div class=" center card-action blue lighten-2 white-text" >
-             <a href="teachers.php">More Information <i class="material-icons tiny">open_in_new</i></a>
+             <a href="teachers.php">Manage teachers <i class="material-icons tiny">open_in_new</i></a>
               </div>
             </div>
           </div>
@@ -70,18 +76,18 @@ $teacher_row = mysqli_num_rows($run);
                   <p> <b>Courses</b> </p>
                 </div>
                 <div class=" center card-action blue lighten-2 white-text" >
-               <a href="course.php">More Information <i class="material-icons tiny">open_in_new</i></a>
+               <a href="course.php">Manage courses <i class="material-icons tiny">open_in_new</i></a>
                 </div>
               </div>
             </div>
             <div class="col m12 s12 l3">
                 <div class="card">
                   <div class="card-content blue lighten-3 white-text">
-                    <h3> <b>2</b> </h3>
-                    <p> <b>Marks</b> </p>
+                  <h3> <b>✓</b> </h3>
+                  <p> <b>System Status</b> </p>
                   </div>
                   <div class=" center card-action blue lighten-2 white-text" >
-                 <a href="">More Information <i class="material-icons tiny">open_in_new</i></a>
+                 <a href="addstudent.php">Add a student <i class="material-icons tiny">person_add</i></a>
                   </div>
                 </div>
               </div>

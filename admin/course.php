@@ -1,6 +1,10 @@
 <?php
 require_once('../include/header.php');
 require_once('../include/dbcon.php');
+
+if (empty($_SESSION['csrf_token'])) {
+  $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 ?>
 
 <!-- Checking That EditCourseId Session Is Setted Or Not, If Setted Then It Will Redirect To The Edit Course Paqge -->
@@ -34,7 +38,7 @@ $count = 0;
       <nav class="teal">
         <div class="container">
           <div class="nav-wrapper">
-            <a href="" class="brand-logo center">Social Learnia</a>
+            <a href="dashboard.php" class="brand-logo center">COLLEGE MANAGEMENT SYSTEM</a>
             <a href="" class="sidenav-trigger show-on-large" data-target="slide-out"><i class="material-icons">menu</i></a>
           </div>        
         </div>
@@ -48,13 +52,6 @@ $count = 0;
           <card-title>
             All Courses
           </card-title>
-                  <?php
-                    if(isset($_POST['editcbtn']))
-                   {
-                    echo "editcourse";
-                   }
-                   else{echo "no edit couse";}
-                  ?>
           <div class="card-content">
             <table class="striped " >
               <thead>
@@ -79,17 +76,15 @@ $count = 0;
                 ?>
                 <tr>
                 <td> <?php echo $count; ?> </td>
-                <td> <?php echo $course_short_name; ?> </td>
-                <td> <?php echo $course_full_name; ?> </td>
-                <td> <?php echo $course_date; ?> </td>
+                <td> <?php echo htmlspecialchars($course_short_name, ENT_QUOTES, 'UTF-8'); ?> </td>
+                <td> <?php echo htmlspecialchars($course_full_name, ENT_QUOTES, 'UTF-8'); ?> </td>
+                <td> <?php echo htmlspecialchars($course_date, ENT_QUOTES, 'UTF-8'); ?> </td>
                 <td> 
                   <a href="editcourse.php?id=<?php echo $course_id; ?>" class=" green-text waves-light"> <i class="material-icons">mode_edit</i></a>  &nbsp;
-                  <a href="deletecourse.php?id=<?php echo $course_id; ?>" class=" red-text waves-light"  > <i class="material-icons">delete</i></a> 
-                  <!--**********************New Testing Coding Started*****************************-->
-
-
-                  <form method="POST" action="">
-                    <button type="submit" name="editcbtn" class="btn transparent z-depth-0" ><i class="material-icons red-text">person</i></button>
+                  <form method="POST" action="deletecourse.php" style="display:inline">
+                    <input type="hidden" name="id" value="<?php echo (int) $course_id; ?>">
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
+                    <button type="submit" class="btn transparent z-depth-0 red-text" onclick="return confirm('Delete this course?');" aria-label="Delete course"><i class="material-icons">delete</i></button>
                   </form>
                 </td>
                 </tr>

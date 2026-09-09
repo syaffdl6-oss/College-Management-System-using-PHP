@@ -7,30 +7,37 @@ require_once('../include/login_header.php');
 
     if(isset($_POST['login'])){
 
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    $email = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
+    $statement = mysqli_prepare($con, 'SELECT * FROM students WHERE email = ? LIMIT 1');
+    mysqli_stmt_bind_param($statement, 's', $email);
+    mysqli_stmt_execute($statement);
+    $data = mysqli_fetch_assoc(mysqli_stmt_get_result($statement));
+    mysqli_stmt_close($statement);
 
-    $email = htmlentities(mysqli_real_escape_string($con,$email));
-    $password = htmlentities(mysqli_real_escape_string($con,$password));
-
-    $query = "SELECT * FROM `students` WHERE `email` = '$email' and `password` = '$password' ";
-    $run = mysqli_query($con,$query);
-    $row = mysqli_num_rows($run);
-    if($row < 1)
+    $validPassword = $data && (password_verify($password, $data['password']) || hash_equals($data['password'], $password));
+    if(!$validPassword)
     {
         $_SESSION['login_failed'] = "Username Or Password Wrong";
         $login_failed = $_SESSION['login_failed'];
     }
     else{
-        $data = mysqli_fetch_assoc($run);
         $student_name = $data['name'];
         $student_id = $data['id'];
+        if (!password_get_info($data['password'])['algo']) {
+            $hash = password_hash($password, PASSWORD_DEFAULT);
+            $upgrade = mysqli_prepare($con, 'UPDATE students SET password = ? WHERE id = ?');
+            mysqli_stmt_bind_param($upgrade, 'si', $hash, $student_id);
+            mysqli_stmt_execute($upgrade);
+            mysqli_stmt_close($upgrade);
+        }
+        session_regenerate_id(true);
         $_SESSION['student_name'] = $student_name;
         $_SESSION['student_id'] = $student_id;
         header("location:index.php");
     }
 }
-?>s
+?>
 <?php
 if(isset($_SESSION['student_id']))
 {
@@ -63,14 +70,14 @@ else{
                                 <i class="material-icons prefix">
                                     person
                                 </i>
-                                <input type="text" name="email" id="email" value="rachanasingh4888@gmail.com" required="required">
+                                <input type="email" name="email" id="email" required="required" autocomplete="email">
                                 <label for="email">Enter Your Email Address</label>
                             </div>
                             <div class="input-field">
                                 <i class="material-icons prefix">
                                     lock
                                 </i>                    
-                                <input type="password" name="password" value="rachana" id="password" required="required">
+                                <input type="password" name="password" id="password" required="required" autocomplete="current-password">
                                 <label for="password">Enter Your Password</label>
                             </div>
                             <div class="">

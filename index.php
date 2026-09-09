@@ -42,14 +42,14 @@ else{
                     <form action="" method="POST">
                     <div class="input-field">
                        <!-- <select name="standerd" class="browser-default" > -->
-                        <select name="standerd" >
-                            <option value="" class="disabled">Select Standerd</option>
-                            <option value="1">Btech</option>
-                            <option value="2">BBA</option>
-                            <option value="3">BCA</option>
-                            <option value="4">MBA</option>
-                            <option value="5">MCA</option>
-                            <option value="6">Mtech</option>
+                        <select name="standerd" required>
+                            <option value="" class="disabled" selected>Select Programme</option>
+                            <option value="Btech">Btech</option>
+                            <option value="BBA">BBA</option>
+                            <option value="BCA">BCA</option>
+                            <option value="MBA">MBA</option>
+                            <option value="MCA">MCA</option>
+                            <option value="Mtech">Mtech</option>
                         </select>
                     </div>
                     <div class="input-field">
@@ -67,23 +67,30 @@ else{
 <?php
  if(isset($_POST['submit'])){
 
-    $standerd = $_POST['standerd'];
-    $rollno = $_POST['rollno'];
+    $standerd = trim($_POST['standerd'] ?? '');
+    $rollno = trim($_POST['rollno'] ?? '');
+    $programCodes = ['Btech' => '1', 'BBA' => '2', 'BCA' => '3', 'MBA' => '4', 'MCA' => '5', 'Mtech' => '6'];
 
-    $query = "select * from students where `standerd` = '$standerd' and `rollno` = '$rollno'";
-    $run = mysqli_query($con,$query);
-    $row = mysqli_num_rows($run);
+    $data = null;
+    if ($standerd !== '' && $rollno !== '' && isset($programCodes[$standerd])) {
+        $code = $programCodes[$standerd];
+        $statement = mysqli_prepare($con, 'SELECT * FROM students WHERE rollno = ? AND (standerd = ? OR standerd = ?) LIMIT 1');
+        mysqli_stmt_bind_param($statement, 'sss', $rollno, $standerd, $code);
+        mysqli_stmt_execute($statement);
+        $result = mysqli_stmt_get_result($statement);
+        $data = mysqli_fetch_assoc($result);
+        mysqli_stmt_close($statement);
+    }
 
 
       
 
-    if($row < 1)
+    if(!$data)
     {
         echo "<script> alert('No such student found!')</script>";
     }
     else{
 
-        $data= mysqli_fetch_assoc($run);
         $image = $data['image'];
         $name = $data['name'];
         $rollno = $data['rollno'];
@@ -158,4 +165,3 @@ $('select').formSelect();
 
 
 
-                    

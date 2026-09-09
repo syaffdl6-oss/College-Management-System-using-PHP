@@ -9,12 +9,13 @@ require_once('../include/dbcon.php');
 
     if(isset($_POST['add_course'])){
 
-    $course_short_name = $_POST['course_short_name'];
-    $course_full_name= $_POST['course_full_name'];
-    $course_date= $_POST['course_date'];
-
-   $query = "INSERT INTO `course`(`course_short_name`, `course_full_name`, `course_date`) VALUES ('$course_short_name','$course_full_name','$course_date')";
-    $run = mysqli_query($con,$query);
+    $course_short_name = trim($_POST['course_short_name'] ?? '');
+    $course_full_name= trim($_POST['course_full_name'] ?? '');
+    $course_date= date('Y-m-d');
+    $statement = mysqli_prepare($con, 'INSERT INTO course (course_short_name, course_full_name, course_date) VALUES (?, ?, ?)');
+    mysqli_stmt_bind_param($statement, 'sss', $course_short_name, $course_full_name, $course_date);
+    $run = mysqli_stmt_execute($statement);
+    mysqli_stmt_close($statement);
     
     if($run)
     {
@@ -33,7 +34,7 @@ require_once('../include/dbcon.php');
       <nav class="teal">
         <div class="container">
           <div class="nav-wrapper">
-            <a href="" class="brand-logo center">College Management System</a>
+            <a href="dashboard.php" class="brand-logo center">COLLEGE MANAGEMENT SYSTEM</a>
             <a href="" class="sidenav-trigger show-on-large" data-target="slide-out"><i class="material-icons">menu</i></a>
           </div>        
         </div>
@@ -68,7 +69,7 @@ require_once('../include/dbcon.php');
               </div>
               <div class="input-field">
                 <i class="material-icons prefix">person</i>
-                <input type="text" name="course_date" id="course_date" value="25-01-2023" readonly="readonly" required="required">
+                <input type="text" name="course_date" id="course_date" value="<?php echo date('Y-m-d'); ?>" readonly="readonly" required="required">
                 <label for="course_date" class="">Creation Date</label>
               </div>
               <button type="submit" name="add_course" class="btn" style="width:100%;">Create Course</button>

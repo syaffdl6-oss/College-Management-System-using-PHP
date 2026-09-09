@@ -16,7 +16,7 @@ $run = mysqli_query($con,$query);
       <nav class="teal">
         <div class="container">
           <div class="nav-wrapper">
-            <a href="" class="brand-logo center">Social Learnia</a>
+            <a href="dashboard.php" class="brand-logo center">COLLEGE MANAGEMENT SYSTEM</a>
             <a href="" class="sidenav-trigger show-on-large" data-target="slide-out"><i class="material-icons">menu</i></a>
           </div>        
         </div>
@@ -40,6 +40,7 @@ $run = mysqli_query($con,$query);
                                 <th>Gender</th>
                                 <th>City</th>
                                 <th>Contact</th>
+                                <th>Action</th>
                             </tr>
                             
                                 <?php
@@ -66,12 +67,13 @@ $run = mysqli_query($con,$query);
                                       echo "user.png";
                                     }
                                       ?>" class="responsive-img circle" style="width: 100px;"> </td>
-                                    <td><?php echo $name; ?></td>
-                                    <td><?php echo $rollno; ?></td>
-                                    <td><?php echo $standerd; ?></td>
-                                    <td><?php echo $gender; ?></td>
-                                    <td><?php echo $contact; ?></td>
-                                    <td><?php echo $city; ?></td>
+                                    <td><?php echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><?php echo htmlspecialchars($rollno, ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><?php echo htmlspecialchars($standerd, ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><?php echo htmlspecialchars($gender, ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><?php echo htmlspecialchars($contact, ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><?php echo htmlspecialchars($city, ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><a href="editstudent.php?id=<?php echo (int) $data['id']; ?>" class="btn-small teal">Edit</a></td>
                                     </tr>
                                 <?php } ?>
                             

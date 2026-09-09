@@ -7,29 +7,48 @@ require_once('../include/header.php');
     require_once('../include/dbcon.php');
 
     if(isset($_POST['submit'])){
-    $image_name = $_FILES['image']['name'];
-    $temp_image_name =  $_FILES['image']['tmp_name'];
-    $rollno = $_POST['rollno'];
-    $standerd= $_POST['standerd'];
-    $name= $_POST['name'];
-    $gender= $_POST['gender'];
-    $contact = $_POST['contact'];
-    $email =  $_POST['email'];
-    $city = $_POST['city'];
-    move_uploaded_file($temp_image_name,"img/$image_name");
-   $query = "INSERT INTO `students`(`rollno`, `standerd`, `name`, `gender`, `contact`, `email`, `city`,`image`) VALUES ('$rollno','$standerd','$name','$gender','$contact','$email','$city','$image_name')";
-    $run = mysqli_query($con,$query);
-    
-    if($run)
-    {
-        $_SESSION['student_added'] = "Student Added Successfully";
-        $student_added =  $_SESSION['student_added'];
-    }
-    else{
+    $rollno = trim($_POST['rollno'] ?? '');
+    $standerd = $_POST['standerd'] ?? '';
+    $username = trim($_POST['username'] ?? '');
+    $name = trim($_POST['name'] ?? '');
+    $gender = $_POST['gender'] ?? '';
+    $contact = trim($_POST['contact'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
+    $city = trim($_POST['city'] ?? '');
+    $allowedPrograms = ['1', '2', '3', '4', '5', '6'];
 
-      $_SESSION['student_added_failed'] = "Failed To Add New Student";
-      $student_added_failed =  $_SESSION['student_added_failed'];
-     }
+    if ($rollno === '' || !in_array($standerd, $allowedPrograms, true) || !preg_match('/^[A-Za-z0-9_.-]{3,40}$/', $username) || $name === '' || !in_array($gender, ['male', 'female'], true) || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($password) < 8 || $city === '') {
+      $student_added_failed = 'Please enter valid details. Username must be 3–40 characters and password at least 8 characters.';
+    } else {
+      $image_name = 'user.png';
+      if (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
+        $file = $_FILES['image'];
+        $extensions = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
+        $mime = $file['error'] === UPLOAD_ERR_OK ? (new finfo(FILEINFO_MIME_TYPE))->file($file['tmp_name']) : false;
+        if ($file['error'] !== UPLOAD_ERR_OK || !isset($extensions[$mime]) || $file['size'] > 2 * 1024 * 1024) {
+          $student_added_failed = 'Upload a JPG, PNG, or WebP image smaller than 2 MB.';
+        } else {
+          $image_name = bin2hex(random_bytes(16)) . '.' . $extensions[$mime];
+          if (!move_uploaded_file($file['tmp_name'], '../img/' . $image_name)) {
+            $student_added_failed = 'Unable to save the profile image.';
+          }
+        }
+      }
+
+      if (!isset($student_added_failed)) {
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+        $statement = mysqli_prepare($con, 'INSERT INTO students (rollno, standerd, username, name, gender, contact, email, password, city, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        mysqli_stmt_bind_param($statement, 'ssssssssss', $rollno, $standerd, $username, $name, $gender, $contact, $email, $passwordHash, $city, $image_name);
+        $run = mysqli_stmt_execute($statement);
+        mysqli_stmt_close($statement);
+        if ($run) {
+          $student_added = 'Student added successfully.';
+        } else {
+          $student_added_failed = 'Unable to add student. Roll number, username, or email may already be in use.';
+        }
+      }
+    }
 }
 ?>
       <!-- The Coding Has Been Started From Here -->
@@ -56,6 +75,9 @@ require_once('../include/header.php');
               if(isset($student_added)){
                 echo $student_added; 
               }
+              elseif(isset($student_added_failed)){
+                echo $student_added_failed;
+              }
               
 
             ?> </h5></div>
@@ -75,6 +97,11 @@ require_once('../include/header.php');
                                 <i class="material-icons prefix">person</i>
                                     <input type="text" name="name" id="name" required="required">
                                     <label for="name">Enter Name</label>
+                                </div>
+                                <div class="input-field">
+                                    <i class="material-icons prefix">account_circle</i>
+                                    <input type="text" name="username" id="username" required="required" pattern="[A-Za-z0-9_.-]{3,40}">
+                                    <label for="username">Username</label>
                                 </div>
                                 <div class="input-field">
                                         <i class="material-icons prefix">call</i>
@@ -102,10 +129,15 @@ require_once('../include/header.php');
                                         <input type="text" name="city" id="city" required="required">
                                         <label for="city">Enter City Name</label>
                                     </div>
-                                    <div class="input-field">
+                                  <div class="input-field">
                                       <i class="material-icons prefix">email</i>
-                                      <input type="text" name="email" id="email" required="required">
+                                      <input type="email" name="email" id="email" required="required">
                                       <label for="email">Enter Email Address</label>
+                                  </div>
+                                  <div class="input-field">
+                                      <i class="material-icons prefix">lock</i>
+                                      <input type="password" name="password" id="password" required="required" minlength="8" autocomplete="new-password">
+                                      <label for="password">Password (8 characters minimum)</label>
                                   </div>
 
                             </div>
