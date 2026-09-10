@@ -1,8 +1,8 @@
 <?php
-$dbname = "if0_42873520_sms";
-$dbusername ="if0_42873520";
-$dbpassword = "Collagemanag12";
-$dbhost = "sql209.infinityfree.com";
+$dbname = "if0_42885023_sms";
+$dbusername ="if0_42885023";
+$dbpassword = "Collagemanag22";
+$dbhost = "sql113.infinityfree.com";
 
 $con = mysqli_connect($dbhost,$dbusername,$dbpassword,$dbname);
 if (!$con) {
