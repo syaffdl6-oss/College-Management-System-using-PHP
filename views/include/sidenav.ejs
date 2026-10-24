@@ -1,0 +1,74 @@
+<% const ap = typeof authParam !== 'undefined' ? authParam : (user ? `?auth=${user.id}` : ''); %>
+<ul class="sidenav collapsible sidenav-fixed" id="slide-out">
+  <li>
+    <div class="user-view">
+      <div class="background">
+        <img src="/images/bg1.jpg" class="responsive-img" alt="">
+      </div>
+      <a href="/admin/dashboard<%= ap %>">
+        <img src="/img/<%= (user && user.image) ? user.image : 'teacher.png' %>" alt="" class="responsive-img circle" style="border: 2px solid #fff;">
+      </a>
+      <span class="name white-text" style="font-weight: 700; font-size: 16px;"><%= user ? user.name : 'المدير' %></span>
+      <span class="email white-text" style="font-size: 13px;"><%= user ? user.email : 'syaffdl6@gmail.com' %></span>
+      <span class="chip teal white-text" style="height: 24px; line-height: 24px; font-size: 11px; margin-top: 5px;">
+        <%= (user && user.isAdmin) ? 'مسؤول النظام (Admin)' : (user ? user.position : 'هيئة التدريس') %>
+      </span>
+    </div>
+  </li>
+  <li>
+    <a href="/admin/dashboard<%= ap %>" class="waves-effect">
+      <i class="material-icons">dashboard</i>لوحة التحكم الرئيسية
+    </a>
+  </li>
+  <li>
+    <div class="collapsible-header waves-effect">
+      <i class="material-icons">people</i>
+      <span>إدارة الطلاب</span>
+      <i class="material-icons prefix">arrow_drop_down</i>
+    </div>
+    <div class="collapsible-body">
+      <ul>
+        <li><a href="/admin/addstudent<%= ap %>"><i class="material-icons">person_add</i>إضافة طالب جديد</a></li>
+        <li><a href="/admin/allstudents<%= ap %>"><i class="material-icons">list_alt</i>قائمة جميع الطلاب</a></li>
+        <li><a href="/admin/deletestudent<%= ap %>"><i class="material-icons">search</i>بحث وفلترة الطلاب</a></li>
+      </ul>
+    </div>
+  </li>
+  <li>
+    <div class="collapsible-header waves-effect">
+      <i class="material-icons">school</i>
+      <span>هيئة التدريس</span>
+      <i class="material-icons prefix">arrow_drop_down</i>
+    </div>
+    <div class="collapsible-body">
+      <ul>
+        <li><a href="/admin/addteacher<%= ap %>"><i class="material-icons">group_add</i>إضافة عضو هيئة تدريس</a></li>
+        <li><a href="/admin/teachers<%= ap %>"><i class="material-icons">groups</i>قائمة المعلمين والمشرفين</a></li>
+      </ul>
+    </div>
+  </li>
+  <li>
+    <div class="collapsible-header waves-effect">
+      <i class="material-icons">menu_book</i>
+      <span>البرامج والمساقات</span>
+      <i class="material-icons prefix">arrow_drop_down</i>
+    </div>
+    <div class="collapsible-body">
+      <ul>
+        <li><a href="/admin/addcourse<%= ap %>"><i class="material-icons">post_add</i>إضافة تخصص أو مساق</a></li>
+        <li><a href="/admin/course<%= ap %>"><i class="material-icons">library_books</i>جميع البرامج الأكاديمية</a></li>
+      </ul>
+    </div>
+  </li>
+  <div class="divider"></div>
+  <li>
+    <a href="/admin/about<%= ap %>" class="waves-effect">
+      <i class="material-icons">info</i>عن نظام الكلية
+    </a>
+  </li>
+  <li>
+    <a href="/logout" onclick="try{localStorage.removeItem('cms_admin_id');}catch(e){}" class="waves-effect red-text">
+      <i class="material-icons red-text">logout</i>تسجيل الخروج
+    </a>
+  </li>
+</ul>

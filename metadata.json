@@ -1,0 +1,8 @@
+{
+  "name": "College Management System",
+  "description": "College Management System for student, teacher, and academic course administration.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

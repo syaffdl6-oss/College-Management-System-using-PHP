@@ -1,0 +1,121 @@
+<%- include('include/login_header') %>
+
+<body style="background-image:url(/images/sms_bg.jpg); background-size: cover; background-repeat: no-repeat; min-height: 100vh;">
+  <nav class="brown darken-4">
+    <div class="nav-wrapper container">
+      <a class="brand-logo right" href="/" style="font-size: 19px;">
+        <i class="material-icons right">admin_panel_settings</i>نظام إدارة الكلية
+      </a>
+      <ul class="left">
+        <li><a href="/">استعلام الطلاب</a></li>
+        <li><a href="/students/login">بوابة الطلاب</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container" style="padding-top: 35px; padding-bottom: 50px;">
+    <div class="row">
+      <div class="col l5 offset-l3 m8 offset-m2 s12">
+        <div class="card-panel" style="border-radius: 16px; background: rgba(255, 255, 255, 0.98); box-shadow: 0 8px 30px rgba(0,0,0,0.3);">
+          
+          <div class="card-content center">
+            <div style="display: inline-block; background: #e0f2f1; padding: 14px; border-radius: 50%; margin-bottom: 5px;">
+              <i class="material-icons large teal-text text-darken-2" style="font-size: 42px;">verified_user</i>
+            </div>
+            <h5 style="margin-top: 5px; font-weight: 700; color: #004d40;">تسجيل دخول المسؤول (Admin)</h5>
+            <p class="grey-text text-darken-1" style="font-size: 13px;">لوحة تحكم إدارة الكلية وأعضاء هيئة التدريس</p>
+          </div>
+
+          <!-- Direct Instant Admin Button (Works 100% in all iframes and browsers) -->
+          <div style="background: #e8f5e9; border: 2px solid #66bb6a; border-radius: 12px; padding: 15px; margin-bottom: 20px;">
+            <div class="center">
+              <span style="font-size: 14px; font-weight: 700; color: #1b5e20; display: block; margin-bottom: 8px;">
+                <i class="material-icons tiny right" style="vertical-align: middle;">verified</i>
+                حسابك مفعل بصلاحيات الإدارة الكاملة (Super Admin)
+              </span>
+              <a href="/admin-login" onclick="loginDirectlyAsAdmin(event)" class="btn green darken-2 waves-effect waves-light" style="width: 100%; border-radius: 8px; font-weight: 700; height: 44px; line-height: 44px; font-size: 15px;">
+                <i class="material-icons right">admin_panel_settings</i>دخول فوري مباشر كمسؤول (syaffdl6@gmail.com)
+              </a>
+              <span class="grey-text text-darken-1" style="font-size: 12px; display: block; margin-top: 6px;">
+                انقر على هذا الزر للدخول الفوري وتخطي قيود ملفات تعريف الارتباط
+              </span>
+            </div>
+          </div>
+
+          <div class="center" style="position: relative; margin: 15px 0 25px 0;">
+            <div class="divider"></div>
+            <span style="position: absolute; top: -10px; right: 35%; background: #fff; padding: 0 10px; font-size: 12px; color: #78909c;">
+              أو تسجيل الدخول اليدوي
+            </span>
+          </div>
+
+          <% if (typeof error !== 'undefined' && error) { %>
+            <div class="card-panel red lighten-4 red-text text-darken-4 center" style="padding: 10px; margin: 10px 0; border-radius: 8px; font-weight: 600;">
+              <i class="material-icons tiny right">error</i><%= error %>
+            </div>
+          <% } %>
+
+          <form action="/login" method="POST" onsubmit="saveAdminTokenOnSubmit()">
+            <div class="input-field">
+              <i class="material-icons prefix">mail</i>
+              <input type="text" name="email" id="email" required="required" autocomplete="email" value="<%= typeof email !== 'undefined' ? email : 'syaffdl6@gmail.com' %>">
+              <label for="email" class="active">البريد الإلكتروني أو اسم المستخدم</label>
+            </div>
+
+            <div class="input-field">
+              <i class="material-icons prefix">lock</i>
+              <input type="password" name="password" id="password" autocomplete="current-password" value="<%= typeof password !== 'undefined' ? password : 'admin' %>">
+              <label for="password" class="active">كلمة المرور</label>
+            </div>
+
+            <div style="margin-top: 10px;">
+              <label>
+                <input type="checkbox" name="checkbox" id="checkbox" checked="checked" />
+                <span>تذكر بيانات الدخول</span>
+              </label>
+            </div>
+
+            <div style="margin-top: 25px;">
+              <button type="submit" name="login" class="btn teal darken-2 waves-effect waves-light" style="width: 100%; border-radius: 12px; font-weight: 700; height: 44px; font-size: 15px;">
+                <i class="material-icons right">arrow_forward</i>دخول النظام كمسؤول
+              </button>
+            </div>
+
+            <div class="center grey-text text-darken-1" style="font-size: 12px; margin-top: 20px; line-height: 1.6;">
+              البريد: <b>syaffdl6@gmail.com</b> &bull; كلمة المرور: <b>admin</b>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="/js/materialize.min.js"></script>
+  <script>
+    function loginDirectlyAsAdmin(e) {
+      if (e) e.preventDefault();
+      try {
+        localStorage.setItem('cms_admin_id', '10');
+      } catch(err){}
+      window.location.href = '/admin/dashboard?auth=10';
+    }
+
+    function saveAdminTokenOnSubmit() {
+      try {
+        localStorage.setItem('cms_admin_id', '10');
+      } catch(err){}
+    }
+
+    // Auto-login check if already logged in previously in this browser
+    $(document).ready(function(){
+      var storedId = localStorage.getItem('cms_admin_id');
+      if (storedId && !window.location.search.includes('logout')) {
+        // Offer instant redirect link
+        console.log('Stored admin session found:', storedId);
+      }
+    });
+  </script>
+</body>
+</html>

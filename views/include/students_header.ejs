@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>بوابة الطالب - مرحباً <%= student ? student.name : 'الطالب' %></title>
+  <!--Import Cairo and Tajawal fonts for Arabic typography-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import materialize.css-->
+  <link type="text/css" rel="stylesheet" href="/css/materialize.min.css" media="screen,projection"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      font-family: 'Cairo', 'Tajawal', sans-serif !important;
+      direction: rtl;
+      text-align: right;
+    }
+    input, select, textarea, button, table {
+      font-family: 'Cairo', 'Tajawal', sans-serif !important;
+    }
+    header, .mufazmi, footer {
+      padding-right: 300px;
+      padding-left: 0;
+    }
+    @media only screen and (max-width : 992px) {
+      header, .mufazmi, footer {
+        padding-right: 0;
+      }
+    }
+    .sidenav.sidenav-fixed {
+      right: 0;
+      left: auto !important;
+    }
+    .sidenav li > a > i.material-icons {
+      float: right;
+      margin-left: 16px;
+      margin-right: 0;
+    }
+    .sidenav .collapsible-header i.material-icons.prefix {
+      float: left !important;
+      margin-left: 0 !important;
+    }
+    th, td {
+      text-align: right;
+    }
+    .badge {
+      float: left !important;
+    }
+  </style>
+</head>
+<body bgcolor="#ececec">

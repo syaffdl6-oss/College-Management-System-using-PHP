@@ -1,0 +1,47 @@
+<% const sap = typeof studentAuthParam !== 'undefined' ? studentAuthParam : (student ? `?s_auth=${student.id}` : ''); %>
+<ul id="slide-out" class="sidenav collapsible sidenav-fixed">
+  <li class="user-view">
+    <div class="background">
+      <img src="/images/sms_bg.jpg" class="responsive-img" alt="">
+    </div>
+    <a href="/students/index<%= sap %>">
+      <img src="/img/<%= (student && student.image) ? student.image : 'user.png' %>" alt="" class="responsive-img circle" style="border: 2px solid #fff;">
+    </a>
+    <span class="name white-text" style="font-weight: 700; font-size: 16px;"><%= student ? student.name : 'الطالب' %></span>
+    <span class="email white-text" style="font-size: 13px;"><%= student ? student.email : '' %></span>
+    <span class="chip brown darken-3 white-text" style="height: 24px; line-height: 24px; font-size: 11px; margin-top: 5px;">
+      رقم القيد: <%= student ? student.rollno : '' %>
+    </span>
+  </li>
+  <li>
+    <a href="/students/index<%= sap %>" class="waves-effect">
+      <i class="material-icons">account_circle</i>الملف الأكاديمي
+    </a>
+  </li>
+  <li>
+    <div class="collapsible-header waves-effect">
+      <i class="material-icons" style="color:#757575;">file_download</i>
+      <span>مركز التحميل والوثائق</span>
+      <i class="material-icons prefix">arrow_drop_down</i>
+    </div>
+    <div class="collapsible-body">
+      <ul style="overflow-x: hidden">
+        <li><a href="#!"><i class="material-icons">chevron_left</i>الواجبات والتكليفات</a></li>
+        <li><a href="#!"><i class="material-icons">chevron_left</i>المقررات والمواد الدراسية</a></li>
+        <li><a href="#!"><i class="material-icons">chevron_left</i>الخطة الدراسية (المنهج)</a></li>
+        <li><a href="#!"><i class="material-icons">chevron_left</i>النماذج والاستمارات</a></li>
+      </ul>
+    </div>
+  </li>
+  <div class="divider"></div>
+  <li>
+    <a href="/students/about<%= sap %>" class="waves-effect">
+      <i class="material-icons">info</i>عن البوابة الأكاديمية
+    </a>
+  </li>
+  <li>
+    <a href="/students/logout" onclick="try{localStorage.removeItem('cms_student_id');}catch(e){}" class="waves-effect red-text">
+      <i class="material-icons red-text">logout</i>تسجيل الخروج
+    </a>
+  </li>
+</ul>

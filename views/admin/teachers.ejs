@@ -1,0 +1,93 @@
+<%- include('../include/header', { title: 'إدارة هيئة التدريس' }) %>
+
+<nav class="teal darken-2">
+  <div class="container">
+    <div class="nav-wrapper">
+      <a href="/admin/dashboard" class="brand-logo center" style="font-size: 20px; font-weight: 700;">
+        دليل أعضاء هيئة التدريس
+      </a>
+      <a href="#" class="sidenav-trigger show-on-large" data-target="slide-out"><i class="material-icons">menu</i></a>
+    </div>
+  </div>
+</nav>
+
+<div class="row main" style="padding-top: 15px;">
+  <div class="col l12 m12 s12">
+    <% if (typeof message !== 'undefined' && message) { %>
+      <div class="card-panel green lighten-4 green-text text-darken-4 center" style="border-radius: 8px; font-weight: 600;">
+        <i class="material-icons tiny right">check_circle</i><%= message %>
+      </div>
+    <% } %>
+
+    <div class="card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
+      <div class="card-content" style="padding-bottom: 0;">
+        <div class="row valign-wrapper" style="margin-bottom: 10px;">
+          <div class="col s8">
+            <h5 style="margin: 0; font-weight: 700; color: #004d40;">الكادر التدريسي والإداري بالكلية</h5>
+            <p class="grey-text" style="font-size: 13px; margin: 4px 0 0 0;">استعراض وتعديل بيانات الأساتذة والمعلمين والمشرفين</p>
+          </div>
+          <div class="col s4 left-align">
+            <a href="/admin/addteacher" class="btn teal darken-1 waves-effect waves-light" style="border-radius: 8px; font-weight: 600;">
+              <i class="material-icons right">group_add</i>إضافة معلم جديد
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <ul class="collection" style="margin-top: 15px; border: none;">
+        <li class="collection-item" style="padding: 0;">
+          <div class="responsive-table" style="overflow-x: auto;">
+            <table class="striped highlight">
+              <thead>
+                <tr class="teal lighten-4">
+                  <th>م</th>
+                  <th>الصورة</th>
+                  <th>الاسم الكامل</th>
+                  <th>المسمى الوظيفي / الرتبة</th>
+                  <th>البريد الإلكتروني</th>
+                  <th>رقم الهاتف</th>
+                  <th>العنوان / المكتب</th>
+                  <th>الإجراء</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (teachers.length === 0) { %>
+                  <tr>
+                    <td colspan="8" class="center grey-text" style="padding: 25px;">لا يوجد أعضاء هيئة تدريس مسجلين.</td>
+                  </tr>
+                <% } else { %>
+                  <% teachers.forEach((data, index) => { %>
+                    <tr>
+                      <td><%= index + 1 %></td>
+                      <td>
+                        <img src="/img/<%= data.image || 'teacher.png' %>" class="responsive-img circle" style="width: 48px; height: 48px; object-fit: cover; border: 2px solid #009688;">
+                      </td>
+                      <td>
+                        <b style="font-size: 15px;"><%= data.name %></b>
+                        <% if (data.isAdmin) { %>
+                          <span class="chip green lighten-4 green-text text-darken-3" style="font-size: 11px; height: 22px; line-height: 22px; font-weight: 700;">مدير النظام</span>
+                        <% } %>
+                      </td>
+                      <td><span class="chip teal lighten-5 teal-text text-darken-4" style="font-weight: 600;"><%= data.position %></span></td>
+                      <td><%= data.email %></td>
+                      <td><%= data.contact %></td>
+                      <td><%= data.address %></td>
+                      <td>
+                        <a href="/admin/editteacher/<%= data.id %>" class="btn-small teal waves-effect waves-light" style="border-radius: 6px;">
+                          <i class="material-icons right tiny">edit</i>تعديل
+                        </a>
+                      </td>
+                    </tr>
+                  <% }); %>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<%- include('../include/sidenav') %>
+<%- include('../include/footer') %>

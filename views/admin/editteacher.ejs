@@ -1,0 +1,107 @@
+<%- include('../include/header', { title: 'تعديل بيانات عضو التدريس' }) %>
+
+<nav class="teal darken-2">
+  <div class="container">
+    <div class="nav-wrapper">
+      <a href="/admin/dashboard" class="brand-logo center" style="font-size: 20px; font-weight: 700;">
+        تحديث بيانات الأستاذ / المعلم
+      </a>
+      <a href="#" class="sidenav-trigger show-on-large" data-target="slide-out"><i class="material-icons">menu</i></a>
+    </div>
+  </div>
+</nav>
+
+<div class="row main" style="padding-top: 15px;">
+  <div class="col l12 m12 s12">
+    <form action="/admin/editteacher/<%= teacher.id %>" method="POST" enctype="multipart/form-data">
+      <div class="card-panel" style="border-radius: 12px;">
+        <div class="center" style="margin-bottom: 20px;">
+          <h5 style="margin-top: 0; font-weight: 700; color: #004d40;">تعديل ملف الأستاذ: <%= teacher.name %></h5>
+          <% if (typeof error !== 'undefined' && error) { %>
+            <h6 class="center red-text"><b><%= error %></b></h6>
+          <% } %>
+          <% if (typeof success !== 'undefined' && success) { %>
+            <h6 class="center green-text"><b><%= success %></b></h6>
+          <% } %>
+        </div>
+
+        <div class="row">
+          <div class="col l4 m12 s12 center" style="padding: 20px;">
+            <img src="/img/<%= teacher.image || 'teacher.png' %>" class="responsive-img circle" style="width: 130px; height: 130px; object-fit: cover; border: 3px solid #009688; margin-bottom: 12px;">
+            <p style="font-weight: 600; margin-top: 0;">تغيير الصورة الشخصية</p>
+            <div class="file-field input-field">
+              <div class="btn teal btn-small" style="border-radius: 6px;">
+                <span>اختر صورة</span>
+                <input type="file" name="image" accept="image/*">
+              </div>
+              <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" placeholder="تحديث الصورة">
+              </div>
+            </div>
+          </div>
+
+          <div class="col l4 m6 s12">
+            <div class="input-field">
+              <i class="material-icons prefix">person</i>
+              <input type="text" name="name" id="name" value="<%= teacher.name %>" required="required">
+              <label for="name" class="active">الاسم الكامل</label>
+            </div>
+            <div class="input-field">
+              <i class="material-icons prefix">email</i>
+              <input type="email" name="email" id="email" value="<%= teacher.email %>" required="required">
+              <label for="email" class="active">البريد الإلكتروني الجامعي</label>
+            </div>
+            <div class="input-field">
+              <i class="material-icons prefix">call</i>
+              <input type="text" name="contact" id="contact" value="<%= teacher.contact %>" required="required">
+              <label for="contact" class="active">رقم الهاتف</label>
+            </div>
+          </div>
+
+          <div class="col l4 m6 s12">
+            <div class="input-field">
+              <select name="position" required="required">
+                <option value="<%= teacher.position %>" selected><%= teacher.position %></option>
+                <option value="أستاذ دكتور (Professor)">أستاذ دكتور (Professor)</option>
+                <option value="أستاذ مشارك (Associate Professor)">أستاذ مشارك (Associate Professor)</option>
+                <option value="أستاذ مساعد (Assistant Professor)">أستاذ مساعد (Assistant Professor)</option>
+                <option value="محاضر (Lecturer)">محاضر (Lecturer)</option>
+                <option value="مدير الشؤون الأكاديمية (Manager)">مدير الشؤون الأكاديمية (Manager)</option>
+              </select>
+            </div>
+            <div class="input-field">
+              <i class="material-icons prefix">lock</i>
+              <input type="password" name="password" id="password" value="<%= teacher.password %>" required="required">
+              <label for="password" class="active">كلمة المرور</label>
+            </div>
+            <div class="input-field">
+              <i class="material-icons prefix">location_city</i>
+              <input type="text" name="address" id="address" value="<%= teacher.address %>" required="required">
+              <label for="address" class="active">المكتب / القسم</label>
+            </div>
+          </div>
+
+          <div class="col s12 center" style="margin: 15px 0;">
+            <label style="margin-left: 25px;">
+              <input type="radio" name="gender" value="ذكر" <%= (teacher.gender === 'ذكر' || teacher.gender === 'male') ? 'checked' : '' %> />
+              <span style="font-size: 15px; font-weight: 600;">ذكر</span>
+            </label>
+            <label>
+              <input type="radio" name="gender" value="أنثى" <%= (teacher.gender === 'أنثى' || teacher.gender === 'female') ? 'checked' : '' %> />
+              <span style="font-size: 15px; font-weight: 600;">أنثى</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="center" style="margin-top: 15px;">
+          <button type="submit" name="submit" style="width:100%; border-radius: 8px; font-weight: 700; height: 42px;" class="btn teal darken-2 waves-effect waves-light">
+            <i class="material-icons right">save</i>حفظ بيانات عضو التدريس
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include('../include/sidenav') %>
+<%- include('../include/footer') %>

@@ -1,0 +1,75 @@
+<%- include('../include/login_header', { title: 'تسجيل دخول الطالب' }) %>
+
+<body style="background-image:url(/images/sms_bg.jpg); background-size: cover; background-repeat: no-repeat; min-height: 100vh;">
+  <nav class="brown darken-4">
+    <div class="nav-wrapper container">
+      <a class="brand-logo right" href="/" style="font-size: 19px;">
+        <i class="material-icons right">school</i>بوابة الطلاب الأكاديمية
+      </a>
+      <ul class="left">
+        <li><a href="/">استعلام الطلاب</a></li>
+        <li><a href="/login">دخول الإدارة وهيئة التدريس</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container" style="padding-top: 45px; padding-bottom: 50px;">
+    <div class="row">
+      <div class="col l5 offset-l3 m8 offset-m2 s12">
+        <form action="/students/login" method="POST">
+          <div class="card-panel" style="border-radius: 16px; background: rgba(255, 255, 255, 0.97); box-shadow: 0 8px 30px rgba(0,0,0,0.3);">
+            
+            <div class="card-content center">
+              <div style="display: inline-block; background: #efebe9; padding: 12px; border-radius: 50%; margin-bottom: 5px;">
+                <i class="material-icons large brown-text text-darken-3" style="font-size: 42px;">account_circle</i>
+              </div>
+              <h5 style="margin-top: 5px; font-weight: 700; color: #3e2723;">تسجيل دخول الطالب</h5>
+              <p class="grey-text text-darken-1" style="font-size: 13px;">الوصول إلى السجل الدراسي، الرسوم، والامتحانات</p>
+            </div>
+
+            <% if (typeof error !== 'undefined' && error) { %>
+              <div class="card-panel red lighten-4 red-text text-darken-4 center" style="padding: 10px; margin: 10px 0; border-radius: 8px; font-weight: 600;">
+                <i class="material-icons tiny right">error</i><%= error %>
+              </div>
+            <% } %>
+
+            <div class="input-field">
+              <i class="material-icons prefix">mail</i>
+              <input type="email" name="email" id="email" required="required" autocomplete="email" value="<%= typeof email !== 'undefined' ? email : 'info.mufazmi@gmail.com' %>">
+              <label for="email" class="active">البريد الإلكتروني للطالب</label>
+            </div>
+
+            <div class="input-field">
+              <i class="material-icons prefix">lock</i>
+              <input type="password" name="password" id="password" required="required" autocomplete="current-password" value="<%= typeof password !== 'undefined' ? password : 'farooqui' %>">
+              <label for="password" class="active">كلمة المرور</label>
+            </div>
+
+            <div style="margin-top: 10px;">
+              <label>
+                <input type="checkbox" name="checkbox" id="checkbox" checked="checked" />
+                <span>تذكر بيانات الدخول</span>
+              </label>
+            </div>
+
+            <div style="margin-top: 25px;">
+              <button type="submit" name="login" class="btn brown darken-4 waves-effect waves-light" style="width: 100%; border-radius: 12px; font-weight: 700; height: 42px;">
+                <i class="material-icons right">login</i>تسجيل دخول الطالب
+              </button>
+            </div>
+
+            <div class="divider" style="margin: 20px 0 15px 0;"></div>
+            <div class="center grey-text text-darken-1" style="font-size: 12px; line-height: 1.6;">
+              حساب تجريبي للطالب:<br>
+              البريد: <b>info.mufazmi@gmail.com</b> &bull; كلمة المرور: <b>farooqui</b>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="/js/materialize.min.js"></script>
+</body>
+</html>

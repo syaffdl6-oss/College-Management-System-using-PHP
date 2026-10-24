@@ -1,0 +1,151 @@
+<%- include('../include/header', { title: 'لوحة تحكم إدارة الكلية' }) %>
+<% const ap = typeof authParam !== 'undefined' ? authParam : (user ? `?auth=${user.id}` : ''); %>
+
+<nav class="teal darken-2">
+  <div class="container">
+    <div class="nav-wrapper">
+      <a href="/admin/dashboard<%= ap %>" class="brand-logo center" style="font-size: 20px; font-weight: 700;">
+        نظام إدارة الكلية - لوحة تحكم الإدارة
+      </a>
+      <a href="#" class="sidenav-trigger show-on-large" data-target="slide-out"><i class="material-icons">menu</i></a>
+    </div>
+  </div>
+</nav>
+
+<div class="row main" style="padding-top: 15px;">
+  <div class="col s12">
+    <div class="card-panel teal lighten-5" style="border-radius: 12px; border-right: 5px solid #00695c;">
+      <h5 class="teal-text text-darken-4" style="font-weight: 700; margin-top: 0;">نظرة عامة على الإدارة الأكاديمية</h5>
+      <p class="grey-text text-darken-3" style="font-size: 15px; margin-bottom: 0;">
+        أهلاً بك، <b><%= user ? user.name : 'المدير' %></b>! 
+        <% if (user && user.isAdmin) { %>
+          <span class="chip green darken-1 white-text" style="font-weight: 600; margin-right: 8px;">صلاحيات الأدمن الكاملة (Admin)</span>
+        <% } %>
+        تم تسجيل دخولك بنجاح، يمكنك إدارة ملفات الطلاب، أعضاء هيئة التدريس، وتحديث البرامج والمساقات الدراسية.
+      </p>
+    </div>
+  </div>
+
+  <div class="col m12 s12 l3">
+    <div class="card z-depth-1" style="border-radius: 12px; overflow: hidden;">
+      <div class="card-content blue lighten-2 white-text" style="padding: 20px;">
+        <i class="material-icons right" style="font-size: 48px; opacity: 0.85;">school</i>
+        <h3 style="margin: 0; font-weight: 800;"><%= studentCount %></h3>
+        <p style="font-size: 16px; font-weight: 600; margin-top: 5px;">إجمالي الطلاب المقيدين</p>
+      </div>
+      <div class="center card-action blue lighten-1">
+        <a href="/admin/allstudents<%= ap %>" class="white-text" style="font-weight: 600;">
+          إدارة وسجلات الطلاب <i class="material-icons tiny right">open_in_new</i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col m12 s12 l3">
+    <div class="card z-depth-1" style="border-radius: 12px; overflow: hidden;">
+      <div class="card-content teal lighten-2 white-text" style="padding: 20px;">
+        <i class="material-icons right" style="font-size: 48px; opacity: 0.85;">groups</i>
+        <h3 style="margin: 0; font-weight: 800;"><%= teacherCount %></h3>
+        <p style="font-size: 16px; font-weight: 600; margin-top: 5px;">أعضاء هيئة التدريس</p>
+      </div>
+      <div class="center card-action teal lighten-1">
+        <a href="/admin/teachers<%= ap %>" class="white-text" style="font-weight: 600;">
+          دليل الكادر الأكاديمي <i class="material-icons tiny right">open_in_new</i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col m12 s12 l3">
+    <div class="card z-depth-1" style="border-radius: 12px; overflow: hidden;">
+      <div class="card-content amber darken-2 white-text" style="padding: 20px;">
+        <i class="material-icons right" style="font-size: 48px; opacity: 0.85;">menu_book</i>
+        <h3 style="margin: 0; font-weight: 800;"><%= courseCount %></h3>
+        <p style="font-size: 16px; font-weight: 600; margin-top: 5px;">البرامج والتخصصات</p>
+      </div>
+      <div class="center card-action amber darken-3">
+        <a href="/admin/course<%= ap %>" class="white-text" style="font-weight: 600;">
+          قائمة البرامج والمقررات <i class="material-icons tiny right">open_in_new</i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col m12 s12 l3">
+    <div class="card z-depth-1" style="border-radius: 12px; overflow: hidden;">
+      <div class="card-content purple lighten-2 white-text" style="padding: 20px;">
+        <i class="material-icons right" style="font-size: 48px; opacity: 0.85;">check_circle</i>
+        <h3 style="margin: 0; font-weight: 800;">جاهز</h3>
+        <p style="font-size: 16px; font-weight: 600; margin-top: 5px;">حالة النظام التشغيلي</p>
+      </div>
+      <div class="center card-action purple lighten-1">
+        <a href="/admin/addstudent<%= ap %>" class="white-text" style="font-weight: 600;">
+          تسجيل طالب جديد <i class="material-icons tiny right">person_add</i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row main">
+  <div class="col s12 m6">
+    <div class="card" style="border-radius: 12px;">
+      <div class="card-content">
+        <span class="card-title" style="font-weight: 700; color: #004d40;">
+          <i class="material-icons right teal-text">flash_on</i>إجراءات سريعة
+        </span>
+        <div class="collection" style="border: none; margin-top: 15px;">
+          <a href="/admin/addstudent<%= ap %>" class="collection-item teal-text text-darken-3">
+            <i class="material-icons right">person_add</i>إضافة طالب جديد للنظام
+          </a>
+          <a href="/admin/addteacher<%= ap %>" class="collection-item teal-text text-darken-3">
+            <i class="material-icons right">group_add</i>تسجيل أستاذ أو محاضر
+          </a>
+          <a href="/admin/addcourse<%= ap %>" class="collection-item teal-text text-darken-3">
+            <i class="material-icons right">post_add</i>إنشاء برنامج أو مساق دراسي
+          </a>
+          <a href="/admin/deletestudent<%= ap %>" class="collection-item teal-text text-darken-3">
+            <i class="material-icons right">search</i>بحث وفحص السجلات الأكاديمية
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col s12 m6">
+    <div class="card" style="border-radius: 12px;">
+      <div class="card-content">
+        <span class="card-title" style="font-weight: 700; color: #37474f;">
+          <i class="material-icons right">info</i>معلومات حسابك الحالي
+        </span>
+        <table class="striped" style="margin-top: 15px;">
+          <tbody>
+            <tr>
+              <th style="width: 35%;">الاسم:</th>
+              <td><b><%= user ? user.name : 'سياف' %></b></td>
+            </tr>
+            <tr>
+              <th>البريد الإلكتروني:</th>
+              <td><%= user ? user.email : 'syaffdl6@gmail.com' %></td>
+            </tr>
+            <tr>
+              <th>الصفة والصلاحية:</th>
+              <td>
+                <span class="chip green white-text" style="font-weight: 700;">
+                  <%= (user && user.isAdmin) ? 'مسؤول النظام (Super Admin)' : (user ? user.position : 'عضو هيئة تدريس') %>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>هاتف التواصل:</th>
+              <td><%= user ? user.contact : '0501234567' %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../include/sidenav') %>
+<%- include('../include/footer') %>

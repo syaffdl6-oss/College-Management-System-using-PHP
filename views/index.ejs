@@ -1,0 +1,138 @@
+<%- include('include/login_header') %>
+
+<body style="background-image:url(/images/sms_bg.jpg); background-size: cover; background-repeat: no-repeat; min-height: 100vh;">
+  <nav class="brown darken-4">
+    <div class="nav-wrapper container">
+      <a class="brand-logo right hide-on-med-and-down" href="/" style="font-size: 20px;">
+        <i class="material-icons right">account_balance</i>نظام إدارة الكلية الأكاديمي
+      </a>
+      <ul class="left">
+        <li class="waves-effect waves-light"><a href="/about">عن النظام</a></li>
+        <li class="waves-effect waves-light"><a href="/login" class="teal-text text-lighten-4"><b>دخول المسؤول / هيئة التدريس</b></a></li>
+        <li class="waves-effect waves-light"><a href="/students/login">بوابة الطلاب</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container" style="padding-top: 35px; padding-bottom: 40px;">
+    <div class="row">
+      <div class="col l6 offset-l3 m8 offset-m2 s12">
+        <div class="card-panel with-header" style="border-radius: 16px; background: rgba(255, 255, 255, 0.96); box-shadow: 0 6px 25px rgba(0,0,0,0.25);">
+          <div class="card-header center">
+            <h5 style="margin-top: 5px; font-weight: 700; color: #3e2723;">استعلام بيانات الطالب</h5>
+            <p class="grey-text text-darken-1" style="font-size: 14px;">اختر البرنامج الأكاديمي وأدخل رقم القيد / الجلوس لعرض الملف الدراسي</p>
+          </div>
+          <form action="/" method="POST">
+            <div class="input-field">
+              <select name="standerd" required>
+                <option value="" disabled <%= !selectedStanderd ? 'selected' : '' %>>اختر البرنامج الأكاديمي</option>
+                <option value="Btech" <%= selectedStanderd === 'Btech' ? 'selected' : '' %>>بكالوريوس هندسة الحاسوب والتكنولوجيا (B.Tech)</option>
+                <option value="BBA" <%= selectedStanderd === 'BBA' ? 'selected' : '' %>>بكالوريوس إدارة أعمال (BBA)</option>
+                <option value="BCA" <%= selectedStanderd === 'BCA' ? 'selected' : '' %>>بكالوريوس نظم وتطبيقات الحاسب (BCA)</option>
+                <option value="MBA" <%= selectedStanderd === 'MBA' ? 'selected' : '' %>>ماجستير إدارة الأعمال (MBA)</option>
+                <option value="MCA" <%= selectedStanderd === 'MCA' ? 'selected' : '' %>>ماجستير تطبيقات الحاسوب (MCA)</option>
+                <option value="Mtech" <%= selectedStanderd === 'Mtech' ? 'selected' : '' %>>ماجستير تقنية المعلومات (M.Tech)</option>
+              </select>
+            </div>
+            <div class="input-field">
+              <input type="text" name="rollno" id="rollno" value="<%= typeof rollno !== 'undefined' ? rollno : '' %>" required>
+              <label for="rollno" class="<%= typeof rollno !== 'undefined' && rollno ? 'active' : '' %>">أدخل رقم القيد / الجلوس (مثال: 1 أو 2 أو 6 أو 10)</label>
+            </div>
+            <div class="center" style="margin-top: 25px;">
+              <button type="submit" name="submit" class="btn waves-effect waves-light teal darken-2" style="width: 100%; border-radius: 12px; font-weight: 700; font-size: 15px;">
+                <i class="material-icons right">search</i>عرض معلومات وسجل الطالب
+              </button>
+            </div>
+          </form>
+
+          <div class="divider" style="margin: 20px 0 15px 0;"></div>
+          <div class="center" style="font-size: 13px;">
+            <a href="/login" class="teal-text text-darken-3" style="font-weight: 600;">
+              <i class="material-icons tiny right" style="vertical-align: middle;">admin_panel_settings</i>
+              تسجيل الدخول كمسؤول للنظام (Admin Login)
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="row">
+        <div class="col l6 offset-l3 m8 offset-m2 s12">
+          <div class="card-panel red lighten-4 red-text text-darken-4 center" style="border-radius: 10px; font-weight: 600;">
+            <i class="material-icons tiny right">error_outline</i><%= error %>
+          </div>
+        </div>
+      </div>
+    <% } %>
+
+    <% if (typeof student !== 'undefined' && student) { %>
+      <div class="row">
+        <div class="col l8 offset-l2 m10 offset-m1 s12">
+          <div class="card-panel" style="border-radius: 20px; background: rgba(255, 255, 255, 0.98); box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
+            <div class="row valign-wrapper" style="margin-bottom: 0;">
+              <div class="col l4 m12 s12 center">
+                <img src="/img/<%= student.image || 'user.png' %>" alt="" class="responsive-img circle" style="width: 125px; height: 125px; object-fit: cover; border: 3px solid #009688; box-shadow: 0 3px 10px rgba(0,0,0,0.15);">
+                <h5 style="margin-top: 12px; font-weight: 700; color: #004d40;">
+                  <%= student.name %>
+                </h5>
+                <span class="chip teal white-text" style="font-weight: 600;"><%= student.displayStanderd || student.standerd %></span>
+              </div>
+              <div class="col l8 m12 s12">
+                <ul class="collection" style="border-radius: 12px; border: 1px solid #e0e0e0; margin: 0;">
+                  <li class="collection-item">
+                    <table class="striped">
+                      <tbody>
+                        <tr>
+                          <th style="width: 35%; color: #546e7a;">رقم القيد / الجلوس</th>
+                          <td><b class="teal-text text-darken-3" style="font-size: 16px;"><%= student.rollno %></b></td>
+                        </tr>
+                        <tr>
+                          <th style="color: #546e7a;">اسم الطالب الرباعي</th>
+                          <td><b><%= student.name %></b></td>
+                        </tr>
+                        <tr>
+                          <th style="color: #546e7a;">البرنامج الأكاديمي</th>
+                          <td><%= student.displayStanderd || student.standerd %></td>
+                        </tr>
+                        <tr>
+                          <th style="color: #546e7a;">الجنس</th>
+                          <td><%= student.gender %></td>
+                        </tr>
+                        <tr>
+                          <th style="color: #546e7a;">رقم التواصل</th>
+                          <td><%= student.contact %></td>
+                        </tr>
+                        <tr>
+                          <th style="color: #546e7a;">المدينة / المنطقة</th>
+                          <td><%= student.city %></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% } %>
+
+    <div class="row">
+      <div class="col s12 center" style="padding: 15px 0;">
+        <span class="white-text" style="text-shadow: 0 1px 3px rgba(0,0,0,0.9); font-size: 14px;">
+          بيانات تجريبية سريعة: اختر <b>BCA</b> مع رقم القيد <b>1</b> أو <b>6</b> &bull; أو <b>Btech</b> مع رقم القيد <b>10</b>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="/js/materialize.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      $('select').formSelect();
+    });
+  </script>
+</body>
+</html>
